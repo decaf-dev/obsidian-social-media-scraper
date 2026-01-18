@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "./scripts",
+    "rootDir": "./scripts-src",
+    "types": ["node"],
+    "verbatimModuleSyntax": false,
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "inlineSources": false
+  },
+  "include": ["scripts-src/**/*"],
+  "exclude": ["node_modules", "**/*.svelte"]
+}

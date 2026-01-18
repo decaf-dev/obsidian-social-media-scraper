@@ -1,17 +1,20 @@
-# obsidian-svelte-plugin-starter
+# Obsidian Social Media Scraper
 
-A modern [Obsidian](https://obsidian.md) plugin starter template that integrates [Svelte](https://svelte.dev) for UI development, powered by [esbuild](https://esbuild.github.io/) and [Bun](https://bun.sh/) for fast builds and dependency management.
+A powerful [Obsidian](https://obsidian.md) plugin that helps you scrape and import content from social media platforms (X/Twitter, Instagram, Threads, YouTube) directly into your vault as markdown files with frontmatter.
 
 ---
 
 ### ✨ Features
 
--   ✅ **Svelte Integration** – Build reactive plugin interfaces using [Svelte](https://svelte.dev)
--   ⚡ **Esbuild for Svelte** – Fast bundling via [esbuild](https://esbuild.github.io/) with Svelte support
--   🐰 **Bun Lockfile** – Uses [Bun](https://bun.sh/) for dependency resolution and a `bun.lockb` file
--   📦 **Standard Structure** – Source code in a `src/` folder, output to a `dist/` folder
--   🔁 **Automatic Rebuilds** – Run `bun run dev` to watch for changes and auto-export to `dist/`
--   🚀 **Release Ready** – Includes a GitHub Actions [`release.yml`](.github/workflows/release.yml) workflow for building and publishing releases
+-   🌐 **Multi-Platform Support** – Scrape content from X (Twitter), Instagram, Threads, and YouTube
+-   🎭 **Browser Automation** – Uses Playwright to automate browser interactions
+-   🦁 **Brave Browser Support** – Use Brave for enhanced privacy and ad-blocking
+-   🔐 **Authentication Support** – Store cookies for authenticated scraping or log in manually
+-   ✏️ **Review & Edit** – Review scraped content in a full-width modal before importing
+-   🏷️ **Custom Tags** – Add tags to each item during review
+-   📝 **Markdown Export** – Creates markdown files with customizable frontmatter
+-   ⚙️ **Configurable** – Choose browser type (Chromium, Firefox, WebKit, Brave), headless mode, and frontmatter structure
+-   🎨 **Modern UI** – Built with Svelte 5 for a reactive, beautiful interface
 
 ---
 
@@ -31,30 +34,125 @@ node --version
 
 ---
 
-### 📦 Getting Started
+### 📦 Installation
 
-1. Click **"Use this template"** on GitHub to create your own plugin repository
+#### Prerequisites
+
+**Required:**
+- Node.js (v18 or higher) or Bun
+- Playwright (installed globally)
+
+**Install Playwright globally:**
+
+With Bun (recommended):
+```bash
+bun install -g playwright
+bunx playwright install chromium  # or firefox, webkit
+```
+
+Or with npm:
+```bash
+npm install -g playwright
+npx playwright install chromium  # or firefox, webkit
+```
+
+#### Development Setup
+
+1. Clone this repository
 2. Install dependencies:
     ```bash
     bun install
     ```
-3. Build the plugin into the `dist/` folder, run:
-    ```
+3. Build the plugin:
+    ```bash
     bun run dev
     ```
-4. To test the plugin locally in your Obsidian vault, create a symbolic link:
-
+4. Create a symbolic link to your Obsidian vault:
     ```bash
-    ln -s /path/to/your/template/dist /path/to/your/vault/.obsidian/plugins/your-plugin-name
+    ln -s /path/to/obsidian-social-media-scraper/dist /path/to/your/vault/.obsidian/plugins/social-media-scraper
     ```
+5. Open Obsidian, go to **Settings** → **Community Plugins** and enable **Social Media Scraper**
 
-    e.g.
+---
 
-    ```bash
-    ln -s /decaf-dev/repos/my-plugin/dist /decaf-dev/desktop/obsidian-development/.obsidian/plugins/my-plugin
-    ```
+### 🚀 Usage
 
-5. Open Obsidian. Navigate to **Community Plugins** and enable your plugin
+#### 1. Configure Settings
+
+Go to **Settings** → **Social Media Scraper** and configure:
+
+- **Browser**: Choose Chromium, Firefox, WebKit, or Brave
+- **Brave Path**: If using Brave, specify the path to the Brave executable (see [BRAVE-SETUP.md](BRAVE-SETUP.md))
+- **Headless Mode**: Toggle whether the browser runs visibly or in the background
+- **Authentication Cookies**: Paste cookies for each platform (optional - you can log in manually if not provided)
+- **Frontmatter URL Key**: Customize the property name for URLs in frontmatter (default: `url`)
+
+#### 2. Open the Scraper
+
+- Click the ribbon icon (file-search)
+- Or use the command palette: **Open social media scraper**
+
+#### 3. Scrape Content
+
+1. Select a platform (X, Instagram, Threads, or YouTube)
+2. Click **Scrape**
+3. The browser will open to the configured URL
+4. Wait for scraping to complete (progress shown in "In Progress" section)
+
+#### 4. Review & Import
+
+1. When scraping completes, click the job in "Ready for Review"
+2. A full-width modal opens showing all scraped items
+3. For each item:
+   - Toggle the checkbox to include/exclude
+   - Edit the title and description
+   - Add tags (comma-separated)
+4. Click **Import** to create markdown files in your vault root
+
+---
+
+### 📝 Output Format
+
+Each imported item creates a markdown file with this structure:
+
+```markdown
+---
+url: https://x.com/user/status/123456
+tags:
+  - imported
+  - twitter
+---
+
+# Tweet Title
+
+Description of the content...
+
+![](https://image-url.jpg)
+```
+
+---
+
+### 🔧 Technical Details
+
+**Architecture:**
+- **Frontend**: Svelte 5 with reactive state management
+- **Browser Automation**: Playwright via Node.js `spawn` (external scripts)
+- **Script Execution**: Standalone JavaScript files in `scripts/` folder
+- **File Structure**: Kebab-case for files, PascalCase for types, SCREAMING_SNAKE_CASE for string literals
+- **Type Safety**: Full TypeScript support with strict mode
+
+**How It Works:**
+1. Plugin spawns Node.js processes to run Playwright scripts
+2. Scripts are located in `dist/scripts/` folder
+3. Progress updates via stderr (`PROGRESS:XX`)
+4. Results returned via stdout (JSON)
+5. Scripts can be customized for specific scraping needs
+
+**Current Limitations:**
+- Requires Playwright installed globally on user's system
+- DOM scraping selectors need to be implemented for each platform
+- Files are created in vault root
+- Basic cookie parsing (may need enhancement)
 
 ### 🔁 Setting Up GitHub Releases
 

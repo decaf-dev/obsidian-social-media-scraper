@@ -30,7 +30,7 @@ export default class SocialMediaScraperView extends ItemView {
 		const { contentEl } = this;
 		this.svelteApp = mount(SvelteApp, {
 			target: contentEl,
-			props: { obsidianApp: this.app },
+			props: { obsidianApp: this.app, plugin: this.plugin },
 		});
 	}
 
