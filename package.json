@@ -4,8 +4,9 @@
 	"description": "Helps you to web scape your social media ",
 	"main": "main.js",
 	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"dev": "npm run build:scripts && node esbuild.config.mjs",
+		"build": "npm run build:scripts && tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"build:scripts": "tsc -p tsconfig.scripts.json",
 		"version": "node version-bump.mjs && git add manifest.json versions.json",
 		"check": "svelte-check --tsconfig ./tsconfig.json"
 	},
@@ -27,6 +28,7 @@
 		"typescript": "5.8.3"
 	},
 	"dependencies": {
-		"svelte": "^5.28.2"
+		"svelte": "^5.28.2",
+		"playwright": "^1.49.0"
 	}
 }

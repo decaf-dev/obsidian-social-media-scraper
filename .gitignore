@@ -23,3 +23,7 @@ data.json
 
 # Distribution files
 dist
+
+# Compiled scripts (TypeScript compiles from scripts-src to scripts)
+scripts/*.js
+scripts/*.js.map

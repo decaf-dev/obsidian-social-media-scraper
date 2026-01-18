@@ -19,11 +19,32 @@ const rebuildPlugin = {
 	setup(build) {
 		build.onEnd(async () => {
 			try {
+				// Copy manifest.json
 				await fs.promises.copyFile(
 					path.join(path.resolve(), "manifest.json"),
 					path.join(path.resolve(), "dist", "manifest.json")
 				);
-			} catch (err) {}
+				
+				// Copy compiled scripts folder
+				const scriptsDir = path.join(path.resolve(), "scripts");
+				const distScriptsDir = path.join(path.resolve(), "dist", "scripts");
+				
+				// Create dist/scripts directory if it doesn't exist
+				await fs.promises.mkdir(distScriptsDir, { recursive: true });
+				
+				// Copy all compiled script files (TypeScript compiles to .js)
+				const files = await fs.promises.readdir(scriptsDir);
+				for (const file of files) {
+					if (file.endsWith('.js')) {
+						await fs.promises.copyFile(
+							path.join(scriptsDir, file),
+							path.join(distScriptsDir, file)
+						);
+					}
+				}
+			} catch (err) {
+				console.error('Error copying files:', err);
+			}
 		});
 	},
 };

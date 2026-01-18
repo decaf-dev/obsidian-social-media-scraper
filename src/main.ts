@@ -2,13 +2,10 @@ import {
 	Plugin
 } from "obsidian";
 import { SOCIAL_MEDIA_SCRAPER_VIEW } from "./constants";
+import SocialMediaScraperSettingsTab from "./obsidian/social-media-scraper-settings-tab";
 import SocialMediaScraperView from "./obsidian/social-media-scraper-view";
-
-interface SocialMediaScraperSettings {
-}
-
-const DEFAULT_SETTINGS: SocialMediaScraperSettings = {
-};
+import type { SocialMediaScraperSettings } from "./types";
+import { DEFAULT_SETTINGS } from "./types";
 
 export default class SocialMediaScraper extends Plugin {
 	settings: SocialMediaScraperSettings = DEFAULT_SETTINGS;
@@ -33,8 +30,7 @@ export default class SocialMediaScraper extends Plugin {
 			this.openScraperView();
 		});
 
-		// TODO add when needed
-		// this.addSettingTab(new SocialMediaScraperSettingsTab(this.app, this));
+		this.addSettingTab(new SocialMediaScraperSettingsTab(this.app, this));
 	}
 
 	private openScraperView() {

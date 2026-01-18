@@ -1,6 +1,8 @@
-export const SOCIAL_MEDIA_SCRAPER_VIEW = "social-media-scraper";
+/**
+ * Shared constants between scraper scripts and the main plugin
+ * This file is compiled separately for use in Node.js scripts
+ */
 
-// Platform URLs - shared with scraper scripts
 export const PLATFORM_URLS = {
 	X: 'https://x.com/i/bookmarks',
 	INSTAGRAM: 'https://www.instagram.com/your_activity/saved',
@@ -25,3 +27,5 @@ export const PROGRESS_STEPS = {
 	FINALIZING: 'Finalizing results',
 	COMPLETE: 'Complete',
 } as const;
+
+export type Platform = keyof typeof PLATFORM_URLS;
